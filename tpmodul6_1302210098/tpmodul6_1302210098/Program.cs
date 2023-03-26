@@ -8,6 +8,7 @@ public class SayaTubeVideo
 
     public SayaTubeVideo(string title)
     {
+        if (title == null || title.Length > 100) throw new ArgumentNullException("Judul video tidak valid.");
         Random random = new Random();
         id = random.Next(10000, 99999);
         this.title = title;
@@ -16,6 +17,15 @@ public class SayaTubeVideo
 
     public void IncreasePlayCount(int count)
     {
+        if (count < 0 || count > 10000000) throw new ArgumentOutOfRangeException("Input penambahan play count tidak valid");
+        try
+        {
+            checked { playCount += count; }
+        }
+        catch (OverflowException e)
+        {
+            Console.WriteLine("Error: " + e.Message);
+        }
         playCount += count;
     }
 
@@ -30,7 +40,10 @@ public class SayaTubeVideo
     {
         string judulVideo = "Tutorial Design By Contract - Alif";
         SayaTubeVideo video = new SayaTubeVideo(judulVideo);
-        video.IncreasePlayCount(20);
+        for (int i =0; i < 100000;  i++)
+        {
+            video.IncreasePlayCount(30);
+        }
         video.PrintVideoDetails();
     }
 }
